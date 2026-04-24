@@ -1,0 +1,70 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : ljj
+ Source Server Type    : MySQL
+ Source Server Version : 80045 (8.0.45)
+ Source Host           : 192.168.145.128:3306
+ Source Schema         : mall_payment
+
+ Target Server Type    : MySQL
+ Target Server Version : 80045 (8.0.45)
+ File Encoding         : 65001
+
+ Date: 15/04/2026 16:43:02
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for pay_payment
+-- ----------------------------
+DROP TABLE IF EXISTS `pay_payment`;
+CREATE TABLE `pay_payment`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `payment_no` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `order_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint NOT NULL DEFAULT 0,
+  `pay_channel` int NOT NULL,
+  `pay_status` int NOT NULL,
+  `pay_amount` decimal(16, 2) NOT NULL,
+  `third_trade_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `pay_time` datetime(3) NULL DEFAULT NULL,
+  `close_time` datetime(3) NULL DEFAULT NULL,
+  `close_reason` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `create_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  `update_time` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_pay_payment_payment_no`(`payment_no` ASC) USING BTREE,
+  UNIQUE INDEX `uk_pay_payment_order_no`(`order_no` ASC) USING BTREE,
+  INDEX `idx_pay_payment_status`(`pay_status` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 57 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of pay_payment
+-- ----------------------------
+INSERT INTO `pay_payment` VALUES (1, 'PAY-b30304fa1946', 'ORD-a683eb7b69f7', 0, 1, 2, 398.00, 'MOCK-DB-001', NULL, NULL, '', '2026-04-02 16:26:02.536', '2026-04-02 16:26:02.936');
+INSERT INTO `pay_payment` VALUES (2, 'PAY-a235c127bbeb', 'ORD-a027edbdf00a', 0, 1, 2, 269.00, 'ORDER-VERIFY-b23176690e', NULL, NULL, '', '2026-04-02 20:07:05.800', '2026-04-02 20:07:06.243');
+INSERT INTO `pay_payment` VALUES (3, 'PAY-3409258b2efc', 'ORD-9ae29eee019e', 1001001, 1, 2, 269.00, 'PAY-SUCCESS-0f4ceeb6', '2026-04-02 20:27:30.615', NULL, '', '2026-04-02 20:27:30.779', '2026-04-02 20:27:30.964');
+INSERT INTO `pay_payment` VALUES (4, 'PAY-1c8c51ea30b1', 'ORD-fc7d2722fb22', 1001001, 1, 4, 269.00, '', NULL, '2026-04-02 20:27:30.910', 'USER_CANCEL', '2026-04-02 20:27:31.109', '2026-04-02 20:27:31.177');
+INSERT INTO `pay_payment` VALUES (5, 'PAY-f07b59e04455', 'ORD-59faa9632174', 1001001, 1, 2, 269.00, 'PAY-SUCCESS-bd7e941e', '2026-04-02 20:28:25.913', NULL, '', '2026-04-02 20:28:26.128', '2026-04-02 20:28:26.238');
+INSERT INTO `pay_payment` VALUES (6, 'PAY-fb6cad3e9e2c', 'ORD-d02c16114760', 1001001, 1, 4, 269.00, '', NULL, '2026-04-02 20:28:26.143', 'USER_CANCEL', '2026-04-02 20:28:26.372', '2026-04-02 20:28:26.410');
+INSERT INTO `pay_payment` VALUES (7, 'PAY-59ffd1fd68aa', 'ORD-4a0e0b2e1452', 1001001, 1, 2, 269.00, 'PAY-SUCCESS-ac6dda9b', '2026-04-02 20:29:08.595', NULL, '', '2026-04-02 20:29:08.814', '2026-04-02 20:29:08.910');
+INSERT INTO `pay_payment` VALUES (8, 'PAY-d895b8217d62', 'ORD-34f472ecd059', 1001001, 1, 4, 269.00, '', NULL, '2026-04-02 20:29:08.814', 'USER_CANCEL', '2026-04-02 20:29:09.042', '2026-04-02 20:29:09.081');
+INSERT INTO `pay_payment` VALUES (9, 'PAY-0343bee12823', 'ORD-e1284e29f2d5', 1001001, 1, 4, 269.00, '', NULL, '2026-04-02 20:33:39.932', 'USER_CANCEL', '2026-04-02 20:33:39.795', '2026-04-02 20:33:40.205');
+INSERT INTO `pay_payment` VALUES (10, 'PAY-ac072a704281', 'ORD-631e10fd14eb', 1001001, 1, 4, 269.00, '', NULL, '2026-04-02 20:36:28.583', 'USER_CANCEL', '2026-04-02 20:36:28.448', '2026-04-02 20:36:28.857');
+INSERT INTO `pay_payment` VALUES (11, 'PAY-c9d9fc48fd96', 'ORD-f35ee030c0da', 1001001, 1, 2, 999.00, 'MOCK-de5a5f04c415', '2026-04-08 16:50:02.018', NULL, '', '2026-04-08 16:50:01.685', '2026-04-08 16:50:02.113');
+INSERT INTO `pay_payment` VALUES (12, 'PAY-3abf8b6ea086', 'ORD-69d6c6e340a9', 1001001, 1, 2, 807.00, 'MOCK-714b1b1fe744', '2026-04-08 19:40:42.859', NULL, '', '2026-04-08 19:40:36.913', '2026-04-08 19:40:42.603');
+INSERT INTO `pay_payment` VALUES (13, 'PAYDEMO0001', 'ORD-DEMO-20260401-001', 1001001, 1, 2, 7498.00, 'MOCK-TRADE-0001', '2026-04-01 10:16:00.000', NULL, '', '2026-04-01 10:05:00.000', '2026-04-08 21:09:35.927');
+INSERT INTO `pay_payment` VALUES (14, 'PAYDEMO0002', 'ORD-DEMO-20260403-002', 1001001, 2, 0, 2299.00, '', NULL, NULL, '', '2026-04-03 15:41:00.000', '2026-04-08 21:09:35.927');
+INSERT INTO `pay_payment` VALUES (15, 'PAYADMIN0003', 'ORD-ADMIN-20260405-003', 1001002, 1, 2, 12999.00, 'MOCK-TRADE-0003', '2026-04-05 13:30:00.000', NULL, '', '2026-04-05 13:00:00.000', '2026-04-08 21:09:35.927');
+INSERT INTO `pay_payment` VALUES (16, 'PAYADMIN0004', 'ORD-ADMIN-20260406-004', 1001002, 1, 4, 1599.00, '', NULL, '2026-04-06 19:00:00.000', 'Cancelled by admin', '2026-04-06 18:25:00.000', '2026-04-08 21:09:35.927');
+INSERT INTO `pay_payment` VALUES (25, 'PAY-d288597ad3ed', 'ORD-ab24b15ac53e', 1001001, 2, 2, 5999.00, 'MOCK-2554bbee9800', '2026-04-08 22:02:47.612', NULL, '', '2026-04-08 22:02:44.388', '2026-04-08 22:02:47.598');
+INSERT INTO `pay_payment` VALUES (26, 'PAY-2f94c17f9863', 'ORD-fa92541ec59c', 1001001, 1, 2, 17997.00, 'MOCK-34418c2cafdb', '2026-04-08 22:06:01.518', NULL, '', '2026-04-08 22:06:00.149', '2026-04-08 22:06:01.488');
+INSERT INTO `pay_payment` VALUES (31, 'PAY-a7956d3c4b4f', 'ORD-194d2b574052', 1001001, 1, 2, 11998.00, 'MOCK-235c129e15bf', '2026-04-08 22:50:32.762', NULL, '', '2026-04-08 22:50:30.839', '2026-04-08 22:50:32.803');
+INSERT INTO `pay_payment` VALUES (32, 'PAY-e44a132cfb06', 'ORD-42194a487d65', 1001001, 1, 2, 11998.00, 'MOCK-481ddfc3d410', '2026-04-08 22:50:37.523', NULL, '', '2026-04-08 22:50:36.323', '2026-04-08 22:50:37.550');
+INSERT INTO `pay_payment` VALUES (42, 'PAY-d631bf238542', 'ORD-1c26b36df563', 1001001, 3, 2, 5999.00, 'MOCK-6a51aefec487', '2026-04-09 13:44:27.681', NULL, '', '2026-04-09 13:44:22.636', '2026-04-09 13:44:27.175');
+INSERT INTO `pay_payment` VALUES (51, 'PAY-b7303c5100c5', 'ORD-0992a6bb2c0c', 1001001, 3, 2, 17997.00, 'MOCK-4f002479d793', '2026-04-09 16:49:38.303', NULL, '', '2026-04-09 16:49:33.601', '2026-04-09 16:49:37.196');
+
+SET FOREIGN_KEY_CHECKS = 1;

@@ -1,0 +1,134 @@
+services:
+  mysql:
+    image: docker.m.daocloud.io/library/mysql:8.0
+    container_name: infra-mysql
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: nacos_config
+      MYSQL_USER: nacos
+      MYSQL_PASSWORD: ${NACOS_DB_PASSWORD}
+    command:
+      - --default-authentication-plugin=mysql_native_password
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --max_connections=300
+    ports:
+      - "${HOST_IP}:3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p${MYSQL_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    networks:
+      - infra
+
+  redis:
+    image: docker.m.daocloud.io/library/redis:7.4
+    container_name: infra-redis
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD}
+    ports:
+      - "${HOST_IP}:6379:6379"
+    volumes:
+      - ./data/redis:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a ${REDIS_PASSWORD} ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    networks:
+      - infra
+
+  rmqnamesrv:
+    image: docker.m.daocloud.io/apache/rocketmq:4.9.6
+    container_name: infra-rmq-namesrv
+    restart: unless-stopped
+    environment:
+      TZ: ${TZ}
+      JAVA_OPT_EXT: -server -Xms256m -Xmx256m -Xmn128m
+    command: sh mqnamesrv
+    ports:
+      - "${HOST_IP}:9876:9876"
+    volumes:
+      - ./data/rocketmq/namesrv/logs:/home/rocketmq/logs
+    networks:
+      - infra
+
+  rmqbroker:
+    image: docker.m.daocloud.io/apache/rocketmq:4.9.6
+    container_name: infra-rmq-broker
+    restart: unless-stopped
+    depends_on:
+      - rmqnamesrv
+    environment:
+      TZ: ${TZ}
+      JAVA_OPT_EXT: -server -Xms512m -Xmx512m -Xmn256m
+      NAMESRV_ADDR: rmqnamesrv:9876
+    command: sh mqbroker -c /home/rocketmq/rocketmq-4.9.6/conf/broker.conf
+    ports:
+      - "${HOST_IP}:10909:10909"
+      - "${HOST_IP}:10911:10911"
+      - "${HOST_IP}:10912:10912"
+    volumes:
+      - ./rocketmq/conf/broker.conf:/home/rocketmq/rocketmq-4.9.6/conf/broker.conf:ro
+      - ./data/rocketmq/broker/store:/home/rocketmq/store
+      - ./data/rocketmq/broker/logs:/home/rocketmq/logs
+    networks:
+      - infra
+
+  rmqdashboard:
+    image: docker.m.daocloud.io/apacherocketmq/rocketmq-dashboard:latest
+    container_name: infra-rmq-dashboard
+    restart: unless-stopped
+    depends_on:
+      - rmqnamesrv
+    environment:
+      TZ: ${TZ}
+      JAVA_OPTS: -Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dserver.port=8080
+    ports:
+      - "${HOST_IP}:8081:8080"
+    networks:
+      - infra
+
+  nacos:
+    image: docker.m.daocloud.io/nacos/nacos-server:v2.3.2
+    container_name: infra-nacos
+    restart: unless-stopped
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      TZ: ${TZ}
+      MODE: standalone
+      SPRING_DATASOURCE_PLATFORM: mysql
+      MYSQL_SERVICE_HOST: mysql
+      MYSQL_SERVICE_PORT: 3306
+      MYSQL_SERVICE_DB_NAME: nacos_config
+      MYSQL_SERVICE_USER: nacos
+      MYSQL_SERVICE_PASSWORD: ${NACOS_DB_PASSWORD}
+      MYSQL_SERVICE_DB_PARAM: characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&serverTimezone=Asia/Shanghai
+      JVM_XMS: 512m
+      JVM_XMX: 512m
+      JVM_XMN: 256m
+      NACOS_AUTH_ENABLE: "false"
+    ports:
+      - "${HOST_IP}:8848:8848"
+      - "${HOST_IP}:9848:9848"
+      - "${HOST_IP}:9849:9849"
+    volumes:
+      - ./data/nacos/logs:/home/nacos/logs
+      - ./data/nacos/data:/home/nacos/data
+    networks:
+      - infra
+
+networks:
+  infra:
+    driver: bridge

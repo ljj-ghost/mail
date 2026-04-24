@@ -1,0 +1,45 @@
+server:
+  port: 18080
+
+mall:
+  infra:
+    vm-host: ${MALL_VM_HOST:192.168.145.128}
+    nacos-port: ${MALL_NACOS_PORT:8848}
+
+services:
+  auth:
+    url: http://localhost:18081
+  user:
+    url: http://localhost:18082
+  product:
+    url: http://localhost:18083
+  inventory:
+    url: http://localhost:18084
+  cart:
+    url: http://localhost:18085
+  order:
+    url: http://localhost:18086
+  payment:
+    url: http://localhost:18087
+
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    nacos:
+      discovery:
+        enabled: ${MALL_NACOS_ENABLED:false}
+        server-addr: ${mall.infra.vm-host}:${mall.infra.nacos-port}
+        namespace: ${MALL_NACOS_NAMESPACE:public}
+      config:
+        enabled: ${MALL_NACOS_CONFIG_ENABLED:false}
+        server-addr: ${mall.infra.vm-host}:${mall.infra.nacos-port}
+        namespace: ${MALL_NACOS_NAMESPACE:public}
+        group: ${MALL_NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

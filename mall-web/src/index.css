@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface: #f7f9fb;
+  --color-surface-variant: #d9e4ea;
+  --color-surface-container: #e8eff3;
+  --color-surface-container-low: #f0f4f7;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-high: #e1e9ee;
+  --color-surface-container-highest: #d9e4ea;
+  --color-background: #f7f9fb;
+  --color-primary: #545f73;
+  --color-primary-dim: #485367;
+  --color-primary-container: #d8e3fb;
+  --color-primary-fixed-dim: #cad5ed;
+  --color-secondary: #526075;
+  --color-secondary-container: #d5e3fd;
+  --color-tertiary: #605c78;
+  --color-tertiary-container: #e3dbfd;
+  --color-outline: #717c82;
+  --color-outline-variant: #a9b4b9;
+  --color-on-surface: #2a3439;
+  --color-on-surface-variant: #566166;
+  --color-on-primary: #f6f7ff;
+  --color-on-primary-container: #475266;
+  --color-on-secondary-container: #455367;
+  --color-on-tertiary-container: #3b3950;
+  --color-error: #9f403d;
+  --color-error-container: #fe8983;
+  --color-on-error-container: #752121;
+  --font-headline: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-label: 'Inter', sans-serif;
+  --shadow-editorial: 0 12px 40px rgba(42, 52, 57, 0.08);
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-2xl: 0.75rem;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f7f9fb;
+    color: #2a3439;
+    font-family: 'Inter', sans-serif;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

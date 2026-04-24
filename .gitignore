@@ -1,0 +1,46 @@
+# Build outputs
+target/
+dist/
+dist-ssr/
+out/
+
+# Frontend dependencies and caches
+node_modules/
+.npm-cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local tooling caches
+.tools/
+
+# Runtime logs and crash dumps
+logs/
+deploy/logs/
+deploy/run/
+deploy/*.transcript.txt
+*.log
+hs_err_pid*.log
+replay_pid*.log
+
+# Local environment files
+*.local
+.env
+.env.*
+!.env.example
+
+# IDE and OS files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+*.iml
+*.ipr
+*.iws
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

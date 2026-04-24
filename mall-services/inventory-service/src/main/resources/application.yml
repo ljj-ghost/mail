@@ -1,0 +1,57 @@
+server:
+  port: 18084
+
+mall:
+  infra:
+    vm-host: ${MALL_VM_HOST:192.168.145.128}
+    mysql-port: ${MALL_MYSQL_PORT:3306}
+    mysql-database: ${MALL_MYSQL_DATABASE_INVENTORY:mall_inventory}
+    redis-port: ${MALL_REDIS_PORT:6379}
+    nacos-port: ${MALL_NACOS_PORT:8848}
+    rocketmq-port: ${MALL_ROCKETMQ_NAMESRV_PORT:9876}
+    mysql-username: ${MALL_MYSQL_USERNAME:root}
+    mysql-password: ${MALL_MYSQL_PASSWORD:123456}
+    redis-password: ${MALL_REDIS_PASSWORD:123456}
+
+spring:
+  application:
+    name: inventory-service
+  cloud:
+    nacos:
+      discovery:
+        enabled: ${MALL_NACOS_ENABLED:false}
+        server-addr: ${mall.infra.vm-host}:${mall.infra.nacos-port}
+        namespace: ${MALL_NACOS_NAMESPACE:public}
+      config:
+        enabled: ${MALL_NACOS_CONFIG_ENABLED:false}
+        server-addr: ${mall.infra.vm-host}:${mall.infra.nacos-port}
+        namespace: ${MALL_NACOS_NAMESPACE:public}
+        group: ${MALL_NACOS_GROUP:DEFAULT_GROUP}
+        file-extension: yml
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${mall.infra.vm-host}:${mall.infra.mysql-port}/${mall.infra.mysql-database}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${mall.infra.mysql-username}
+    password: ${mall.infra.mysql-password}
+    hikari:
+      initialization-fail-timeout: -1
+      maximum-pool-size: 8
+  data:
+    redis:
+      host: ${mall.infra.vm-host}
+      port: ${mall.infra.redis-port}
+      password: ${mall.infra.redis-password}
+      database: 3
+      timeout: 5s
+  sql:
+    init:
+      mode: never
+
+rocketmq:
+  name-server: ${mall.infra.vm-host}:${mall.infra.rocketmq-port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
