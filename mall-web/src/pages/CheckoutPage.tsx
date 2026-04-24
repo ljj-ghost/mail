@@ -307,7 +307,7 @@ export function CheckoutPage() {
                   </label>
                   <input
                     className="w-full rounded-xl border-none bg-surface-container-low px-4 py-3 text-sm outline-none transition-all focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary"
-                    placeholder="13800138000"
+                    placeholder="demo-phone"
                     inputMode="numeric"
                     maxLength={11}
                     value={addressDraft.consigneeMobile}

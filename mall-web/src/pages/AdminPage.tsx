@@ -186,7 +186,7 @@ function createEmptyUserDraft(): UserDraft {
     email: '',
     userRole: 'USER',
     status: '1',
-    password: '123456',
+    password: '',
   }
 }
 
@@ -728,7 +728,7 @@ export function AdminPage() {
   }
 
   const resetPassword = async (user: AdminUserListItem) => {
-    const password = window.prompt(`为账号 ${user.loginName} 设置新的登录密码`, '123456')
+    const password = window.prompt(`为账号 ${user.loginName} 设置新的登录密码`, '')
     if (!password) {
       return
     }

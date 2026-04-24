@@ -42,8 +42,8 @@ CREATE TABLE IF NOT EXISTS ums_user_address (
 
 INSERT INTO ums_user (user_id, nickname, mobile, email, status, role_code)
 VALUES
-    (1001001, 'Mall Demo User', '13800138000', 'demo@mall.com', 1, 'USER'),
-    (1001002, 'Mall Admin Console', '13900139000', 'admin@mall.com', 1, 'ADMIN'),
+    (1001001, 'Mall Demo User', 'demo-phone', 'demo@example.com', 1, 'USER'),
+    (1001002, 'Mall Admin Console', 'admin-phone', 'admin@example.com', 1, 'ADMIN'),
     (1001003, '周沐', '13700137001', 'zhoumu@mall.com', 1, 'USER'),
     (1001004, '林序', '13700137002', 'linxu@mall.com', 1, 'USER'),
     (1001005, '赵青', '13700137003', 'zhaoqing@mall.com', 1, 'USER'),
@@ -57,9 +57,9 @@ ON DUPLICATE KEY UPDATE
 
 INSERT INTO ums_user_address (id, user_id, consignee_name, consignee_mobile, detail_address, is_default, deleted)
 VALUES
-    (1, 1001001, '张三', '13800138000', '上海市浦东新区世纪大道 100 号', 1, 0),
-    (2, 1001001, '李四', '13900139000', '上海市静安区南京西路 88 号', 0, 0),
-    (3, 1001002, '运营管理部', '13900139000', '上海市浦东新区世纪大道 300 号', 1, 0),
+    (1, 1001001, 'Demo User', 'demo-phone', 'Example address 100', 1, 0),
+    (2, 1001001, 'Demo Backup', 'admin-phone', 'Example address 200', 0, 0),
+    (3, 1001002, 'Demo Admin', 'admin-phone', 'Example address 300', 1, 0),
     (4, 1001003, '周沐', '13700137001', '杭州市滨江区江南大道 66 号', 1, 0),
     (5, 1001004, '林序', '13700137002', '深圳市南山区科技园南路 18 号', 1, 0),
     (6, 1001005, '赵青', '13700137003', '北京市朝阳区望京阜通东大街 20 号', 1, 0),

@@ -58,8 +58,8 @@ const portalMeta = {
     registerHeading: '注册账号',
     registerDescription: '注册成功后会自动登录。',
     quickTitle: '演示账号',
-    quickDescription: '默认密码 123456。',
-    aliases: ['demo', 'demo@mall.com', '13800138000'],
+    quickDescription: '默认密码由本地环境变量配置。',
+    aliases: ['demo', 'demo@example.com', 'demo-phone'],
     defaultLoginName: 'demo',
     submitLabel: '登录',
   },
@@ -71,8 +71,8 @@ const portalMeta = {
     registerHeading: '管理员登录',
     registerDescription: '管理员账号仅支持登录。',
     quickTitle: '管理员演示账号',
-    quickDescription: '默认密码 123456。',
-    aliases: ['admin', 'admin@mall.com', '13900139000'],
+    quickDescription: '默认密码由本地环境变量配置。',
+    aliases: ['admin', 'admin@example.com', 'admin-phone'],
     defaultLoginName: 'admin',
     submitLabel: '进入后台',
   },
@@ -109,7 +109,7 @@ export function AuthPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loginForm, setLoginForm] = useState<LoginRequest>({
     loginName: portalContent.defaultLoginName,
-    password: '123456',
+    password: '',
     deviceId: 'mall-web-browser',
     deviceType: 1,
   })
@@ -136,7 +136,7 @@ export function AuthPage() {
     setLoginForm((current) => ({
       ...current,
       loginName: portalContent.defaultLoginName,
-      password: '123456',
+      password: '',
     }))
     setError('')
   }, [portalContent.defaultLoginName])
@@ -145,7 +145,7 @@ export function AuthPage() {
     setLoginForm((current) => ({
       ...current,
       loginName,
-      password: '123456',
+      password: '',
     }))
     setError('')
   }
@@ -410,8 +410,8 @@ export function AuthPage() {
                       className="w-full rounded-2xl border border-slate-200 bg-slate-50 py-3 pl-11 pr-4 text-sm text-slate-800 outline-none transition focus:border-slate-300 focus:bg-white focus:ring-2 focus:ring-slate-200"
                       placeholder={
                         portal === 'admin'
-                          ? '例如：admin 或 admin@mall.com'
-                          : '例如：demo / demo@mall.com / 13800138000'
+                          ? '例如：admin 或 admin@example.com'
+                          : '例如：demo / demo@example.com / demo-phone'
                       }
                       value={loginForm.loginName}
                       onChange={(event) =>
@@ -433,7 +433,7 @@ export function AuthPage() {
                     <button
                       className="text-xs font-semibold text-slate-500 transition hover:text-slate-900"
                       type="button"
-                      onClick={() => pushToast('当前演示账号默认密码为 123456。', 'info')}
+                      onClick={() => pushToast('演示账号密码由本地环境变量配置。', 'info')}
                     >
                       忘记密码？
                     </button>
@@ -467,7 +467,7 @@ export function AuthPage() {
                     </button>
                   </div>
                   <p className="text-xs leading-5 text-slate-500">
-                    演示密码：<span className="font-semibold text-slate-700">123456</span>
+                    演示密码：<span className="font-semibold text-slate-700">请查看本地 .env</span>
                   </p>
                 </label>
 

@@ -3,7 +3,7 @@ server:
 
 mall:
   infra:
-    vm-host: ${MALL_VM_HOST:192.168.145.128}
+    vm-host: ${MALL_VM_HOST:127.0.0.1}
     mysql-port: ${MALL_MYSQL_PORT:3306}
     mysql-database: ${MALL_MYSQL_DATABASE_AUTH:mall_auth}
     user-database: ${MALL_MYSQL_DATABASE_USER:mall_user}
@@ -11,13 +11,13 @@ mall:
     nacos-port: ${MALL_NACOS_PORT:8848}
     rocketmq-port: ${MALL_ROCKETMQ_NAMESRV_PORT:9876}
     mysql-username: ${MALL_MYSQL_USERNAME:root}
-    mysql-password: ${MALL_MYSQL_PASSWORD:123456}
-    redis-password: ${MALL_REDIS_PASSWORD:123456}
+    mysql-password: ${MALL_MYSQL_PASSWORD}
+    redis-password: ${MALL_REDIS_PASSWORD}
   auth:
     access-token-ttl-seconds: ${MALL_AUTH_ACCESS_TOKEN_TTL:7200}
     refresh-token-ttl-seconds: ${MALL_AUTH_REFRESH_TOKEN_TTL:604800}
-    jwt-secret: ${MALL_AUTH_JWT_SECRET:mall-auth-jwt-secret-key-2026-demo-please-change}
-    demo-password: ${MALL_AUTH_DEMO_PASSWORD:123456}
+    jwt-secret: ${MALL_AUTH_JWT_SECRET}
+    demo-password: ${MALL_AUTH_DEMO_PASSWORD}
 
 spring:
   application:

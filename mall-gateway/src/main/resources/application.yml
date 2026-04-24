@@ -3,7 +3,7 @@ server:
 
 mall:
   infra:
-    vm-host: ${MALL_VM_HOST:192.168.145.128}
+    vm-host: ${MALL_VM_HOST:127.0.0.1}
     nacos-port: ${MALL_NACOS_PORT:8848}
 
 services:

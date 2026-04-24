@@ -78,17 +78,17 @@ The startup script defaults to:
 - Java: `%JAVA_HOME%\bin\java.exe`, or `java` from `PATH`
 
 Core middleware defaults:
-- VM host: `192.168.145.128`
-- MySQL: `3306`, username `root`, password `123456`
-- Redis: `6379`, password `123456`
+- VM host: configure with `MALL_VM_HOST`
+- MySQL: `3306`, username and password from local environment variables
+- Redis: `6379`, password from local environment variables
 - Nacos: `8848`
 - RocketMQ NameServer: `9876`
 
 Demo auth accounts:
 - login name: `demo`
-- login name: `13800138000`
-- login name: `demo@mall.com`
-- password: `123456`
+- login name: `demo-phone`
+- login name: `demo@example.com`
+- password: configure with `MALL_AUTH_DEMO_PASSWORD`
 
 Logs and PID files are written to:
 - `deploy\logs`

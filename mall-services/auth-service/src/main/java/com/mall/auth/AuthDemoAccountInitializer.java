@@ -25,11 +25,11 @@ public class AuthDemoAccountInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         ensureDemoAccount(1001001L, "demo", "USER", "Mall Demo User");
-        ensureDemoAccount(1001001L, "13800138000", "USER", "Mall Demo User");
-        ensureDemoAccount(1001001L, "demo@mall.com", "USER", "Mall Demo User");
+        ensureDemoAccount(1001001L, "demo-phone", "USER", "Mall Demo User");
+        ensureDemoAccount(1001001L, "demo@example.com", "USER", "Mall Demo User");
         ensureDemoAccount(1001002L, "admin", "ADMIN", "Mall Admin Console");
-        ensureDemoAccount(1001002L, "13900139000", "ADMIN", "Mall Admin Console");
-        ensureDemoAccount(1001002L, "admin@mall.com", "ADMIN", "Mall Admin Console");
+        ensureDemoAccount(1001002L, "admin-phone", "ADMIN", "Mall Admin Console");
+        ensureDemoAccount(1001002L, "admin@example.com", "ADMIN", "Mall Admin Console");
     }
 
     private void ensureDemoAccount(Long userId, String loginName, String roleCode, String remark) {

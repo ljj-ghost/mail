@@ -141,7 +141,7 @@ export function AppShell() {
         <div className="store-header__notice">
           <span>默认网关</span>
           <strong>http://localhost:18080</strong>
-          <span>演示账号 demo / 123456，管理员 admin / 123456</span>
+          <span>演示账号密码请查看本地 .env</span>
         </div>
       </header>
 
