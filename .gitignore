@@ -19,6 +19,7 @@ pnpm-debug.log*
 logs/
 deploy/logs/
 deploy/run/
+deploy/data/
 deploy/*.transcript.txt
 *.log
 hs_err_pid*.log
