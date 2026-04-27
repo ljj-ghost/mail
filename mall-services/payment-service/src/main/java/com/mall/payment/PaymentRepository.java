@@ -12,6 +12,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
+/**
+ * 负责支付单和支付事件历史的数据持久化。
+ */
 public class PaymentRepository {
 
     private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(8);
@@ -194,3 +197,4 @@ public class PaymentRepository {
     ) {
     }
 }
+

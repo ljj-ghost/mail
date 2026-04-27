@@ -7,6 +7,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
+/**
+ * 声明本地开发环境下网关使用的路由表。
+ */
 public class GatewayRoutesConfig {
 
     @Value("${services.auth.url}")
@@ -46,3 +49,4 @@ public class GatewayRoutesConfig {
             .build();
     }
 }
+

@@ -1,5 +1,8 @@
 package com.mall.common.core;
 
+/**
+ * 服务间通用的标准接口响应体。
+ */
 public record CommonResponse<T>(int code, String message, T data, String traceId) {
 
     public static <T> CommonResponse<T> success(T data) {
@@ -22,3 +25,4 @@ public record CommonResponse<T>(int code, String message, T data, String traceId
         return new CommonResponse<>(code, message, null, traceId);
     }
 }
+

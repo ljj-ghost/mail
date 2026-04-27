@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Order(1)
 @Component
+/**
+ * 创建本地购物车服务所需的表结构。
+ */
 public class CartSchemaInitializer implements ApplicationRunner {
 
     @Value("${mall.infra.vm-host}")
@@ -31,3 +34,4 @@ public class CartSchemaInitializer implements ApplicationRunner {
         MysqlSchemaInitializerSupport.initialize(host, port, username, password, databaseName, "db/cart-schema.sql");
     }
 }
+

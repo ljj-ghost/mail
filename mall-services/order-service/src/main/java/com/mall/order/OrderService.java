@@ -38,6 +38,9 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
+/**
+ * 协调下单、订单生命周期变更、幂等处理以及详情缓存逻辑。
+ */
 public class OrderService {
 
     private static final Logger log = LoggerFactory.getLogger(OrderService.class);
@@ -88,6 +91,9 @@ public class OrderService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 创建订单时同时处理幂等保护、库存预占和购物车清理。
+     */
     public OrderSubmitResponse submit(OrderSubmitRequest request) {
         Long userId = requireCurrentUserId();
         String idempotencyKey = request.idempotencyKey();
@@ -182,6 +188,9 @@ public class OrderService {
         }
     }
 
+    /**
+     * 按可选状态条件列出当前用户订单。
+     */
     public List<OrderSummaryDTO> list(Integer status, Integer limit) {
         return orderRepository.findOrdersByUserId(
             requireCurrentUserId(),
@@ -190,6 +199,9 @@ public class OrderService {
         );
     }
 
+    /**
+     * 返回管理员管理页面使用的订单筛选列表。
+     */
     public List<AdminOrderSummaryDTO> adminList(
         String keyword,
         Integer orderStatus,
@@ -207,6 +219,9 @@ public class OrderService {
         );
     }
 
+    /**
+     * 加载当前用户订单的缓存详情或实时详情。
+     */
     public OrderDetailDTO detail(String orderNo) {
         Long userId = requireCurrentUserId();
         OrderDetailDTO cached = getCachedDetail(orderNo);
@@ -220,6 +235,9 @@ public class OrderService {
         return detail;
     }
 
+    /**
+     * 返回任意订单的管理员详情视图。
+     */
     public OrderDetailDTO adminDetail(String orderNo) {
         requireAdmin();
         OrderDetailDTO detail = loadDetail(orderNo);
@@ -227,16 +245,25 @@ public class OrderService {
         return detail;
     }
 
+    /**
+     * 返回服务间支付协调用的最小订单基础投影。
+     */
     public OrderBaseDTO base(String orderNo) {
         OrderRepository.OrderRecord order = requireOrder(orderNo);
         return new OrderBaseDTO(order.orderNo(), order.userId(), order.orderStatus(), order.payStatus(), order.payAmount());
     }
 
+    /**
+     * 取消当前用户订单，并释放对应预占库存。
+     */
     public boolean cancel(String orderNo, String reason) {
         OrderRepository.OrderRecord order = requireOwnedOrder(orderNo);
         return cancelPendingOrder(order, reason);
     }
 
+    /**
+     * 将已取消订单从当前用户可见列表中软删除。
+     */
     public boolean delete(String orderNo) {
         Long userId = requireCurrentUserId();
         OrderRepository.OrderRecord order = requireOwnedOrder(orderNo);
@@ -261,6 +288,9 @@ public class OrderService {
         return true;
     }
 
+    /**
+     * 将已发货订单标记为已收货并完成。
+     */
     public boolean confirmReceipt(String orderNo) {
         OrderRepository.OrderRecord order = requireOwnedOrder(orderNo);
         if (order.orderStatus() == ORDER_COMPLETED) {
@@ -283,6 +313,9 @@ public class OrderService {
         return true;
     }
 
+    /**
+     * 直接通过管理员控制台创建订单。
+     */
     public OrderDetailDTO adminCreate(AdminOrderCreateRequest request) {
         requireAdmin();
         List<OrderItemDTO> items = buildOrderItems(request.items());
@@ -338,6 +371,9 @@ public class OrderService {
         }
     }
 
+    /**
+     * 通过管理员控制台流程更新订单可变字段。
+     */
     public OrderDetailDTO adminUpdate(String orderNo, AdminOrderUpdateRequest request) {
         requireAdmin();
         OrderRepository.OrderRecord order = requireOrder(orderNo);
@@ -404,6 +440,9 @@ public class OrderService {
         return detail;
     }
 
+    /**
+     * 管理员侧在需要清理时删除订单。
+     */
     public boolean adminDelete(String orderNo) {
         requireAdmin();
         OrderRepository.OrderRecord order = requireOrder(orderNo);
@@ -425,6 +464,9 @@ public class OrderService {
         return true;
     }
 
+    /**
+     * 批量关闭超时未支付订单，并释放对应预占库存。
+     */
     public OrderExpiredCloseResponse closeExpired(Integer minutes, Integer limit) {
         int closeMinutes = clamp(minutes, DEFAULT_EXPIRE_MINUTES, 24 * 60);
         int closeLimit = clamp(limit, 100, MAX_EXPIRE_CLOSE_LIMIT);
@@ -465,6 +507,9 @@ public class OrderService {
         return true;
     }
 
+    /**
+     * 应用支付成功回调，并将订单推进到已支付状态。
+     */
     public boolean markPaid(String orderNo, OrderPaidRequest request) {
         OrderRepository.OrderRecord order = requireOrder(orderNo);
         if (order.payStatus() == PAY_SUCCESS) {
@@ -694,3 +739,4 @@ public class OrderService {
         return value == null ? "" : value.trim();
     }
 }
+

@@ -8,6 +8,9 @@ import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
 
+/**
+ * 管理员侧商品完整详情数据。
+ */
 record AdminProductDetailDTO(
     Long skuId,
     Long spuId,
@@ -26,6 +29,9 @@ record AdminProductDetailDTO(
 ) {
 }
 
+/**
+ * 管理员创建或更新商品 SKU 时使用的请求参数。
+ */
 record AdminProductSaveRequest(
     @NotNull Long categoryId,
     @NotBlank @Size(max = 128) String spuName,
@@ -41,8 +47,12 @@ record AdminProductSaveRequest(
 ) {
 }
 
+/**
+ * 返回上传商品图片后的存储文件名和公开访问地址。
+ */
 record ProductImageUploadResponse(
     String fileName,
     String url
 ) {
 }
+

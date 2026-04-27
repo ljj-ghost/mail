@@ -10,6 +10,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+/**
+ * 在本地开发绕过网关鉴权时注入模拟用户请求头。
+ */
 public class MockUserHeaderFilter extends OncePerRequestFilter {
 
     private static final String USER_ID_HEADER = "X-User-Id";
@@ -32,3 +35,4 @@ public class MockUserHeaderFilter extends OncePerRequestFilter {
         }
     }
 }
+

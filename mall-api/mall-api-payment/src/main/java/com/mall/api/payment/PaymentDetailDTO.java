@@ -3,6 +3,9 @@ package com.mall.api.payment;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+/**
+ * 支付查询返回的完整支付详情。
+ */
 public record PaymentDetailDTO(
     String paymentNo,
     String orderNo,
@@ -17,3 +20,4 @@ public record PaymentDetailDTO(
     String closeReason
 ) {
 }
+

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "inventory-service", url = "${services.inventory.url}")
+/**
+ * 在订单预占和补偿流程中调用库存服务。
+ */
 public interface InventoryClient {
 
     @PostMapping("/internal/v1/inventory/check")
@@ -26,3 +29,4 @@ public interface InventoryClient {
     @PostMapping("/internal/v1/inventory/confirm-deduct")
     CommonResponse<Boolean> deduct(@RequestBody InventoryDeductRequest request);
 }
+

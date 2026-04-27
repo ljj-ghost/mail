@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+/**
+ * 负责持久化每个用户的购物车商品项。
+ */
 public class CartRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -81,3 +84,4 @@ public class CartRepository {
         );
     }
 }
+

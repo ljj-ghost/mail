@@ -7,6 +7,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+/**
+ * 为本地环境创建用户表结构和初始化数据。
+ */
 public class UserSchemaInitializer implements ApplicationRunner {
 
     @Value("${mall.infra.vm-host}")
@@ -29,3 +32,4 @@ public class UserSchemaInitializer implements ApplicationRunner {
         MysqlSchemaInitializerSupport.initialize(host, port, username, password, databaseName, "db/user-schema.sql");
     }
 }
+

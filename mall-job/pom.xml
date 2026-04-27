@@ -11,5 +11,6 @@
     </parent>
 
     <artifactId>mall-job</artifactId>
+    <!-- 当前作为任务调度与离线作业的预留聚合模块，后续可继续拆分子任务。 -->
     <packaging>pom</packaging>
 </project>

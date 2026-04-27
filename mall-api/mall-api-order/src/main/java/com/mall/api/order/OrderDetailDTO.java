@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+/**
+ * 返回给前台和管理员调用方的完整订单详情。
+ */
 public record OrderDetailDTO(
     String orderNo,
     Long userId,
@@ -19,3 +22,4 @@ public record OrderDetailDTO(
     List<OrderItemDTO> items
 ) {
 }
+

@@ -14,6 +14,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @Component
+/**
+ * 创建支付表结构和本地初始化数据。
+ */
 public class PaymentSchemaInitializer implements ApplicationRunner {
 
     @Value("${mall.infra.vm-host}")
@@ -67,3 +70,4 @@ public class PaymentSchemaInitializer implements ApplicationRunner {
         }
     }
 }
+

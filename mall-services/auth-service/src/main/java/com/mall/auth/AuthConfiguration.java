@@ -6,6 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
+/**
+ * 提供认证服务专用的基础设施 Bean，例如密码编码器。
+ */
 public class AuthConfiguration {
 
     @Bean
@@ -13,3 +16,4 @@ public class AuthConfiguration {
         return new BCryptPasswordEncoder();
     }
 }
+

@@ -28,6 +28,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+/**
+ * 执行库存校验、预占、扣减、释放以及管理员库存更新逻辑。
+ */
 public class InventoryService {
 
     private static final Duration STOCK_CACHE_TTL = Duration.ofMinutes(5);
@@ -53,6 +56,9 @@ public class InventoryService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 返回指定 SKU 的最新库存快照。
+     */
     public InventoryStockDTO getStock(Long skuId) {
         InventoryStockDTO cached = getCachedStock(skuId);
         if (cached != null) {
@@ -67,6 +73,9 @@ public class InventoryService {
         return dto;
     }
 
+    /**
+     * 校验请求数量当前是否可售。
+     */
     public InventoryCheckResponse check(InventoryCheckRequest request) {
         Map<Long, InventoryRepository.StockSnapshot> stockMap = inventoryRepository.findStocks(
             request.items().stream().map(InventoryItemRequest::skuId).toList()
@@ -86,6 +95,9 @@ public class InventoryService {
         return new InventoryCheckResponse(items.stream().allMatch(InventoryCheckItemResult::enough), items);
     }
 
+    /**
+     * 列出可售库存低于或等于预警阈值的 SKU。
+     */
     public List<InventoryLowStockDTO> lowStock(Integer threshold) {
         return inventoryRepository.findLowStock(threshold).stream()
             .map(snapshot -> new InventoryLowStockDTO(
@@ -97,6 +109,9 @@ public class InventoryService {
             .toList();
     }
 
+    /**
+     * 在支付确认前为订单临时锁定库存。
+     */
     public InventoryReserveResponse reserve(InventoryReserveRequest request) {
         InventoryRepository.ReservationSnapshot existing = inventoryRepository.findReservation(request.orderNo());
         if (existing != null) {
@@ -140,6 +155,9 @@ public class InventoryService {
         return new InventoryReserveResponse(result.reserveNo(), request.orderNo(), result.success(), result.message());
     }
 
+    /**
+     * 释放库存预占，使锁定库存回到可售池。
+     */
     public boolean release(InventoryReleaseRequest request) {
         InventoryRepository.ReservationSnapshot reservation = inventoryRepository.findReservation(request.orderNo());
         if (reservation == null || reservation.status() == RELEASED) {
@@ -169,6 +187,9 @@ public class InventoryService {
         return false;
     }
 
+    /**
+     * 支付成功后正式完成库存扣减。
+     */
     public boolean deduct(InventoryDeductRequest request) {
         InventoryRepository.ReservationSnapshot reservation = inventoryRepository.findReservation(request.orderNo());
         if (reservation == null) {
@@ -210,6 +231,9 @@ public class InventoryService {
         return false;
     }
 
+    /**
+     * 查询当前订单关联的库存预占状态。
+     */
     public InventoryReservationDTO reservation(String orderNo) {
         InventoryRepository.ReservationSnapshot reservation = inventoryRepository.findReservation(orderNo);
         if (reservation == null) {
@@ -225,18 +249,27 @@ public class InventoryService {
         );
     }
 
+    /**
+     * 在记录管理员备注的同时调整可用库存。
+     */
     public InventoryStockDTO replenish(InventoryStockAdjustRequest request) {
         transactionTemplate.executeWithoutResult(status -> inventoryRepository.replenishStock(request.skuId(), request.quantity()));
         deleteStockCache(request.skuId());
         return getStock(request.skuId());
     }
 
+    /**
+     * 在管理员控制台直接覆盖指定 SKU 的可用库存数量。
+     */
     public InventoryStockDTO updateStock(Long skuId, Integer availableQty) {
         transactionTemplate.executeWithoutResult(status -> inventoryRepository.upsertAbsoluteStock(skuId, availableQty));
         deleteStockCache(skuId);
         return getStock(skuId);
     }
 
+    /**
+     * 批量释放已经过期的库存预占。
+     */
     public InventoryExpiredReleaseResponse releaseExpired(int limit) {
         List<String> orderNos = inventoryRepository.findExpiredReservationOrderNos(RESERVED, limit);
         List<String> releasedOrderNos = new ArrayList<>();
@@ -298,3 +331,4 @@ public class InventoryService {
     private record ReserveResult(String reserveNo, boolean success, String message) {
     }
 }
+

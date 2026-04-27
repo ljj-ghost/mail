@@ -15,6 +15,9 @@ import java.time.Duration;
 import java.util.List;
 
 @Service
+/**
+ * 实现带商品校验和 Redis 缓存的购物车读写逻辑。
+ */
 public class CartService {
 
     private static final Duration CART_CACHE_TTL = Duration.ofMinutes(10);
@@ -38,6 +41,9 @@ public class CartService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 返回当前用户购物车，优先使用缓存中的结果。
+     */
     public List<CartItemDTO> items() {
         Long userId = UserContext.getRequiredUserId();
         List<CartItemDTO> cached = getCachedItems(userId);
@@ -50,6 +56,9 @@ public class CartService {
         return items;
     }
 
+    /**
+     * 确认商品可售后，将 SKU 加入购物车。
+     */
     public boolean addItem(AddCartItemRequest request) {
         Long userId = UserContext.getRequiredUserId();
         SkuBaseDTO sku = productClient.getSku(request.skuId()).data();
@@ -65,6 +74,9 @@ public class CartService {
         return true;
     }
 
+    /**
+     * 从当前用户购物车中删除单个 SKU。
+     */
     public boolean deleteItem(Long skuId) {
         Long userId = UserContext.getRequiredUserId();
         cartRepository.deleteItem(userId, skuId);
@@ -72,6 +84,9 @@ public class CartService {
         return true;
     }
 
+    /**
+     * 批量清理购物车商品，通常发生在下单成功之后。
+     */
     public boolean clearItems(ClearCartItemsRequest request) {
         cartRepository.deleteItems(request.userId(), request.skuIds());
         evictCartCache(request.userId());
@@ -105,3 +120,4 @@ public class CartService {
         return "mall:cart:items:" + userId;
     }
 }
+

@@ -10,6 +10,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 用于创建 MySQL 数据库并在启动时执行建表脚本的共享工具。
+ */
 public final class MysqlSchemaInitializerSupport {
 
     private static final String MYSQL_IDENTIFIER_PATTERN = "[A-Za-z0-9_]+";
@@ -87,3 +90,4 @@ public final class MysqlSchemaInitializerSupport {
         return statements;
     }
 }
+

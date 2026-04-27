@@ -22,6 +22,9 @@ import java.time.Duration;
 import java.util.List;
 
 @Service
+/**
+ * 实现当前用户资料查询与收货地址维护逻辑。
+ */
 public class UserService {
 
     private static final Duration PROFILE_CACHE_TTL = Duration.ofMinutes(15);
@@ -46,6 +49,9 @@ public class UserService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 返回当前认证用户的资料信息。
+     */
     public UserBaseDTO me() {
         Long userId = requireCurrentUserId();
         UserBaseDTO cached = getCachedProfile(userId);
@@ -57,6 +63,9 @@ public class UserService {
         return user;
     }
 
+    /**
+     * 更新当前用户的基础资料信息。
+     */
     public UserBaseDTO updateProfile(UserProfileUpdateRequest request) {
         Long userId = requireCurrentUserId();
         Boolean updated = transactionTemplate.execute(
@@ -71,6 +80,9 @@ public class UserService {
         return latest;
     }
 
+    /**
+     * 列出当前用户拥有的全部收货地址。
+     */
     public List<AddressDTO> addresses() {
         Long userId = requireCurrentUserId();
         List<AddressDTO> cached = getCachedAddresses(userId);
@@ -82,6 +94,9 @@ public class UserService {
         return addresses;
     }
 
+    /**
+     * 为当前用户新增收货地址。
+     */
     public AddressDTO addAddress(UserAddressSaveRequest request) {
         Long userId = requireCurrentUserId();
         Boolean created = transactionTemplate.execute(status -> {
@@ -110,6 +125,9 @@ public class UserService {
         return requireDefaultSortedAddress(userId, request);
     }
 
+    /**
+     * 更新当前用户的一条收货地址。
+     */
     public AddressDTO updateAddress(Long addressId, UserAddressSaveRequest request) {
         Long userId = requireCurrentUserId();
         AddressDTO current = requireAddress(userId, addressId);
@@ -138,6 +156,9 @@ public class UserService {
         return requireAddress(userId, addressId);
     }
 
+    /**
+     * 将一条地址标记为当前用户的默认收货地址。
+     */
     public boolean setDefaultAddress(Long addressId) {
         Long userId = requireCurrentUserId();
         requireAddress(userId, addressId);
@@ -152,6 +173,9 @@ public class UserService {
         return true;
     }
 
+    /**
+     * 删除当前用户的一条收货地址。
+     */
     public boolean deleteAddress(Long addressId) {
         Long userId = requireCurrentUserId();
         AddressDTO address = requireAddress(userId, addressId);
@@ -175,10 +199,16 @@ public class UserService {
         return true;
     }
 
+    /**
+     * 返回供内部服务调用的最小用户资料。
+     */
     public UserBaseDTO getUser(Long userId) {
         return requireUser(userId);
     }
 
+    /**
+     * 返回指定用户的默认收货地址。
+     */
     public AddressDTO getDefaultAddress(Long userId) {
         AddressDTO address = userRepository.findDefaultAddress(userId);
         if (address != null) {
@@ -191,11 +221,17 @@ public class UserService {
         return addresses.get(0);
     }
 
+    /**
+     * 从用户服务视角返回管理员所需的用户统计信息。
+     */
     public AdminUserSummaryDTO adminSummary() {
         requireAdmin();
         return userRepository.summarizeUsers();
     }
 
+    /**
+     * 返回限定数量的管理员用户列表。
+     */
     public List<AdminUserListItemDTO> adminUsers(int limit) {
         requireAdmin();
         return userRepository.findAdminUsers(Math.max(1, Math.min(limit, 20)));
@@ -296,3 +332,4 @@ public class UserService {
         return "mall:user:addresses:" + userId;
     }
 }
+

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+/**
+ * 将未捕获异常统一转换为共享接口响应体。
+ */
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
@@ -34,3 +37,4 @@ public class GlobalExceptionHandler {
         return CommonResponse.failure(CommonResultCode.SYSTEM_ERROR.code(), ex.getMessage(), TraceIds.newTraceId());
     }
 }
+

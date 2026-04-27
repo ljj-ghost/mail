@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
+/**
+ * 协调登录、注册、令牌刷新以及管理员用户操作等认证业务。
+ */
 public class AuthService {
 
     private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(8);
@@ -53,6 +56,9 @@ public class AuthService {
         this.transactionTemplate = new TransactionTemplate(transactionManager);
     }
 
+    /**
+     * 使用密码完成用户认证，记录登录事件，并签发新的会话令牌。
+     */
     public TokenInfoDTO loginByPassword(LoginByPasswordRequest request, String clientIp, String userAgent) {
         AuthRepository.AuthAccountRecord account = authRepository.findAccountByLoginName(request.loginName());
         int deviceType = normalizeDeviceType(request.deviceType());
@@ -104,6 +110,9 @@ public class AuthService {
         return toTokenInfo(tokens, sessionNo, account.userId(), nickname, userRole);
     }
 
+    /**
+     * 创建新的会员账号，并立即完成登录。
+     */
     public TokenInfoDTO registerByPassword(RegisterByPasswordRequest request, String clientIp, String userAgent) {
         String loginName = normalizeLoginName(request.loginName());
         String nickname = normalizeNickname(request.nickname());
@@ -145,6 +154,9 @@ public class AuthService {
         );
     }
 
+    /**
+     * 将有效刷新令牌轮换为新的一组访问令牌和刷新令牌。
+     */
     public TokenInfoDTO refreshToken(TokenRefreshRequest request, String clientIp, String userAgent) {
         JwtTokenService.ParsedToken parsedToken = jwtTokenService.parseToken(request.refreshToken());
         if (!"REFRESH".equals(parsedToken.tokenType())) {
@@ -190,6 +202,9 @@ public class AuthService {
         return toTokenInfo(tokens, session.sessionNo(), session.userId(), nickname, userRole);
     }
 
+    /**
+     * 使当前会话失效，令其对应令牌不可继续使用。
+     */
     public boolean logout(String authorizationHeader) {
         JwtTokenService.ParsedToken parsedToken = parseBearerAccessToken(authorizationHeader);
         AuthRepository.AuthSessionRecord session = requireSession(parsedToken.sessionNo());
@@ -199,6 +214,9 @@ public class AuthService {
         return true;
     }
 
+    /**
+     * 在校验旧密码通过后修改当前用户密码。
+     */
     public boolean resetCurrentUserPassword(String authorizationHeader, CurrentUserPasswordResetRequest request) {
         JwtTokenService.ParsedToken parsedToken = parseBearerAccessToken(authorizationHeader);
         ensureUserEnabled(parsedToken.userId());
@@ -222,6 +240,9 @@ public class AuthService {
         return true;
     }
 
+    /**
+     * 列出当前用户的活动会话和历史会话。
+     */
     public List<UserSessionDTO> sessions(String authorizationHeader) {
         JwtTokenService.ParsedToken parsedToken = parseBearerAccessToken(authorizationHeader);
         return authRepository.findSessionsByUserId(parsedToken.userId()).stream()
@@ -239,6 +260,9 @@ public class AuthService {
             .toList();
     }
 
+    /**
+     * 强制将当前用户的某个会话踢下线。
+     */
     public boolean kickout(String authorizationHeader, String sessionNo) {
         JwtTokenService.ParsedToken parsedToken = parseBearerAccessToken(authorizationHeader);
         AuthRepository.AuthSessionRecord targetSession = requireSession(sessionNo);
@@ -250,6 +274,9 @@ public class AuthService {
         return true;
     }
 
+    /**
+     * 解析令牌并返回网关及其他服务可信赖的身份字段。
+     */
     public TokenParseResponse parseToken(String token) {
         JwtTokenService.ParsedToken parsedToken = jwtTokenService.parseToken(token);
         AuthRepository.AuthSessionRecord session = requireSession(parsedToken.sessionNo());
@@ -264,15 +291,24 @@ public class AuthService {
         );
     }
 
+    /**
+     * 返回指定用户当前是否仍可进行认证。
+     */
     public UserAuthStatusDTO userStatus(Long userId) {
         return new UserAuthStatusDTO(userId, authRepository.existsEnabledUser(userId));
     }
 
+    /**
+     * 汇总管理员控制台所需的用户统计信息。
+     */
     public AdminUserSummaryDTO adminSummary() {
         requireAdmin();
         return authRepository.summarizeAdminUsers();
     }
 
+    /**
+     * 返回带角色和状态过滤条件的管理员用户列表。
+     */
     public List<AdminUserListItemDTO> adminUsers(String keyword, Integer status, String role, Integer limit) {
         requireAdmin();
         return authRepository.findAdminUsers(
@@ -283,11 +319,17 @@ public class AuthService {
         );
     }
 
+    /**
+     * 加载单个用户的管理员完整详情。
+     */
     public AdminUserDetailDTO adminUser(Long userId) {
         requireAdmin();
         return requireAdminUser(userId);
     }
 
+    /**
+     * 通过管理员控制台流程创建用户账号。
+     */
     public AdminUserDetailDTO createAdminUser(AdminUserCreateRequest request) {
         requireAdmin();
         String loginName = normalizeLoginName(request.loginName());
@@ -328,6 +370,9 @@ public class AuthService {
         return requireAdminUser(created.userId());
     }
 
+    /**
+     * 在管理员控制台更新用户基础信息和启用状态。
+     */
     public AdminUserDetailDTO updateAdminUser(Long userId, AdminUserUpdateRequest request) {
         requireAdmin();
         AdminUserDetailDTO current = requireAdminUser(userId);
@@ -368,6 +413,9 @@ public class AuthService {
         return requireAdminUser(userId);
     }
 
+    /**
+     * 在管理员控制台重置指定用户密码。
+     */
     public boolean resetAdminUserPassword(Long userId, AdminUserPasswordResetRequest request) {
         requireAdmin();
         requireAdminUser(userId);
@@ -380,6 +428,9 @@ public class AuthService {
         return true;
     }
 
+    /**
+     * 软删除指定用户，并使其活动会话失效。
+     */
     public boolean deleteAdminUser(Long userId) {
         requireAdmin();
         requireAdminUser(userId);
@@ -590,3 +641,4 @@ public class AuthService {
         throw new BusinessException(CommonResultCode.BUSINESS_ERROR.code(), "Unable to allocate user id");
     }
 }
+

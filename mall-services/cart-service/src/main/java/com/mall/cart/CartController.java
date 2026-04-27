@@ -16,6 +16,9 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping("/api/v1/cart")
+/**
+ * 暴露面向用户端的购物车接口。
+ */
 public class CartController {
 
     private final CartService cartService;
@@ -39,3 +42,4 @@ public class CartController {
         return CommonResponse.success(cartService.deleteItem(skuId));
     }
 }
+

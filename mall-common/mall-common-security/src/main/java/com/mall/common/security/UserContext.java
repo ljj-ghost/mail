@@ -3,6 +3,9 @@ package com.mall.common.security;
 import com.mall.common.core.BusinessException;
 import com.mall.common.core.CommonResultCode;
 
+/**
+ * 使用线程上下文保存当前请求用户，供下游业务代码读取。
+ */
 public final class UserContext {
 
     private static final ThreadLocal<UserPrincipal> USER_HOLDER = new ThreadLocal<>();
@@ -61,3 +64,4 @@ public final class UserContext {
     private record UserPrincipal(Long userId, String userRole) {
     }
 }
+

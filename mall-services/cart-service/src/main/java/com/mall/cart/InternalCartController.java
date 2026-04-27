@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Validated
 @RestController
+/**
+ * 暴露供其他服务调用的内部购物车接口。
+ */
 public class InternalCartController {
 
     private final CartService cartService;
@@ -22,3 +25,4 @@ public class InternalCartController {
         return CommonResponse.success(cartService.clearItems(request));
     }
 }
+

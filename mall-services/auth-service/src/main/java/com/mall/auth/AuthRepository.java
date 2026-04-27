@@ -11,6 +11,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
+/**
+ * 负责认证账号、会话以及管理员用户视图相关的数据持久化。
+ */
 public class AuthRepository {
 
     private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(8);
@@ -752,3 +755,4 @@ public class AuthRepository {
     ) {
     }
 }
+

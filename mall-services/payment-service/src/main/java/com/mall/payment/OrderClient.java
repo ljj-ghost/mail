@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @FeignClient(name = "order-service", url = "${services.order.url}")
+/**
+ * 调用订单服务同步支付结果。
+ */
 public interface OrderClient {
 
     @GetMapping("/internal/v1/orders/{orderNo}")
@@ -18,3 +21,4 @@ public interface OrderClient {
     @PostMapping("/internal/v1/orders/{orderNo}/paid")
     CommonResponse<Boolean> markPaid(@PathVariable("orderNo") String orderNo, @RequestBody OrderPaidRequest request);
 }
+

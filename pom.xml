@@ -19,11 +19,17 @@
     </properties>
 
     <modules>
+        <!-- 统一管理各模块依赖版本、插件版本和构建参数。 -->
         <module>mall-dependencies</module>
+        <!-- 存放通用基础能力，例如响应模型、安全上下文和公共工具。 -->
         <module>mall-common</module>
+        <!-- 存放跨服务共享的接口 DTO 定义。 -->
         <module>mall-api</module>
+        <!-- 对外统一入口的网关模块。 -->
         <module>mall-gateway</module>
+        <!-- 核心业务微服务集合模块。 -->
         <module>mall-services</module>
+        <!-- 预留给定时任务、批处理和离线作业的扩展模块。 -->
         <module>mall-job</module>
     </modules>
 </project>

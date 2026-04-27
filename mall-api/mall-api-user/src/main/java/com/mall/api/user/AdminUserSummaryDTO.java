@@ -1,5 +1,8 @@
 package com.mall.api.user;
 
+/**
+ * 管理员用户看板展示的汇总统计。
+ */
 public record AdminUserSummaryDTO(
     Integer totalUsers,
     Integer adminUsers,
@@ -8,3 +11,4 @@ public record AdminUserSummaryDTO(
     Integer totalAddresses
 ) {
 }
+

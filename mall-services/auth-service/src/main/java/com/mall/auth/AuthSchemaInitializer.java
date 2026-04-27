@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Order(1)
 @Component
+/**
+ * 创建本地启动所需的认证库表结构。
+ */
 public class AuthSchemaInitializer implements ApplicationRunner {
 
     @Value("${mall.infra.vm-host}")
@@ -31,3 +34,4 @@ public class AuthSchemaInitializer implements ApplicationRunner {
         MysqlSchemaInitializerSupport.initialize(host, port, username, password, databaseName, "db/auth-schema.sql");
     }
 }
+

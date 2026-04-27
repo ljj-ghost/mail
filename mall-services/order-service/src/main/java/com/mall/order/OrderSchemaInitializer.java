@@ -7,6 +7,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+/**
+ * 创建本地订单服务所需的表结构。
+ */
 public class OrderSchemaInitializer implements ApplicationRunner {
 
     @Value("${mall.infra.vm-host}")
@@ -29,3 +32,4 @@ public class OrderSchemaInitializer implements ApplicationRunner {
         MysqlSchemaInitializerSupport.initialize(host, port, username, password, databaseName, "db/order-schema.sql");
     }
 }
+

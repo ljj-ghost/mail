@@ -26,6 +26,9 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping
+/**
+ * 暴露库存校验、预占、释放以及管理员库存管理接口。
+ */
 public class InventoryController {
 
     private final InventoryService inventoryService;
@@ -92,3 +95,4 @@ public class InventoryController {
         return CommonResponse.success(inventoryService.releaseExpired(limit));
     }
 }
+

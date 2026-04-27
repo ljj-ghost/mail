@@ -24,6 +24,9 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping
+/**
+ * 暴露面向用户和管理员的订单接口。
+ */
 public class OrderController {
 
     private final OrderService orderService;
@@ -120,3 +123,4 @@ public class OrderController {
         return CommonResponse.success(orderService.closeExpired(minutes, limit));
     }
 }
+

@@ -15,6 +15,9 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 @Repository
+/**
+ * 负责订单、订单项以及管理员订单查询投影的数据持久化。
+ */
 public class OrderRepository {
 
     private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(8);
@@ -446,3 +449,4 @@ public class OrderRepository {
     ) {
     }
 }
+

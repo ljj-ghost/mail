@@ -20,6 +20,9 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
+/**
+ * 实现前台商品浏览、管理员商品维护以及商品缓存逻辑。
+ */
 public class ProductService {
 
     private static final Duration CATEGORY_CACHE_TTL = Duration.ofMinutes(30);
@@ -51,6 +54,9 @@ public class ProductService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 返回前台筛选使用的商品分类树。
+     */
     public List<ProductCategoryDTO> categories() {
         String cacheKey = "mall:product:categories";
         List<ProductCategoryDTO> cached = readListCache(cacheKey, CATEGORY_LIST_TYPE);
@@ -63,6 +69,9 @@ public class ProductService {
         return categories;
     }
 
+    /**
+     * 返回前台推荐区域使用的精选 SKU 列表。
+     */
     public List<ProductSkuCardDTO> recommend(Integer limit) {
         int resolvedLimit = clamp(limit, 6, MAX_LIST_LIMIT);
         String cacheKey = "mall:product:recommend:" + resolvedLimit;
@@ -76,6 +85,9 @@ public class ProductService {
         return products;
     }
 
+    /**
+     * 返回按分类或关键字过滤后的前台 SKU 列表。
+     */
     public List<ProductSkuCardDTO> catalog(Long categoryId, String keyword, Integer limit) {
         int resolvedLimit = clamp(limit, DEFAULT_LIST_LIMIT, MAX_LIST_LIMIT);
         String normalizedKeyword = normalizeKeyword(keyword);
@@ -90,6 +102,9 @@ public class ProductService {
         return products;
     }
 
+    /**
+     * 返回带管理筛选条件的管理员商品列表。
+     */
     public List<ProductSkuCardDTO> adminCatalog(String keyword, Integer status, Integer limit) {
         requireAdmin();
         return productRepository.findAdminCatalog(
@@ -99,6 +114,9 @@ public class ProductService {
         );
     }
 
+    /**
+     * 加载单个 SKU 的前台详情视图。
+     */
     public ProductSkuDetailDTO skuDetail(Long skuId) {
         String cacheKey = detailCacheKey(skuId);
         ProductSkuDetailDTO cached = readObjectCache(cacheKey, ProductSkuDetailDTO.class);
@@ -114,6 +132,9 @@ public class ProductService {
         return detail;
     }
 
+    /**
+     * 汇总管理员看板所需的商品统计信息。
+     */
     public AdminProductSummaryDTO adminSummary() {
         AdminProductSummaryDTO cached = readObjectCache(ADMIN_SUMMARY_CACHE_KEY, AdminProductSummaryDTO.class);
         if (cached != null) {
@@ -125,6 +146,9 @@ public class ProductService {
         return summary;
     }
 
+    /**
+     * 加载单个 SKU 的管理员详情视图。
+     */
     public AdminProductDetailDTO adminSkuDetail(Long skuId) {
         requireAdmin();
         AdminProductDetailDTO detail = productRepository.findAdminSkuDetail(skuId);
@@ -134,6 +158,9 @@ public class ProductService {
         return detail;
     }
 
+    /**
+     * 列出某个 SPU 下全部可售 SKU。
+     */
     public List<ProductSkuCardDTO> spuSkus(Long spuId) {
         String cacheKey = "mall:product:spu:" + spuId + ":skus";
         List<ProductSkuCardDTO> cached = readListCache(cacheKey, SKU_CARD_LIST_TYPE);
@@ -146,6 +173,9 @@ public class ProductService {
         return skuCards;
     }
 
+    /**
+     * 返回供其他服务消费的最小 SKU 快照。
+     */
     public SkuBaseDTO internalSku(Long skuId) {
         SkuBaseDTO sku = productRepository.findSkuBase(skuId);
         if (sku == null) {
@@ -154,6 +184,9 @@ public class ProductService {
         return sku;
     }
 
+    /**
+     * 为下游服务批量加载最小 SKU 快照。
+     */
     public List<SkuBaseDTO> batchSkus(List<Long> skuIds) {
         if (skuIds == null || skuIds.isEmpty()) {
             return List.of();
@@ -161,6 +194,9 @@ public class ProductService {
         return productRepository.findSkuBases(skuIds);
     }
 
+    /**
+     * 通过管理员控制台流程创建新的商品 SKU。
+     */
     public AdminProductDetailDTO createAdminProduct(AdminProductSaveRequest request) {
         requireAdmin();
         validateCategory(request.categoryId());
@@ -192,6 +228,9 @@ public class ProductService {
         return adminSkuDetail(skuId);
     }
 
+    /**
+     * 更新已有商品 SKU，并清理相关缓存。
+     */
     public AdminProductDetailDTO updateAdminProduct(Long skuId, AdminProductSaveRequest request) {
         requireAdmin();
         AdminProductDetailDTO current = adminSkuDetail(skuId);
@@ -227,6 +266,9 @@ public class ProductService {
         return adminSkuDetail(skuId);
     }
 
+    /**
+     * 在管理员侧对商品 SKU 执行软删除。
+     */
     public boolean deleteAdminProduct(Long skuId) {
         requireAdmin();
         AdminProductDetailDTO current = adminSkuDetail(skuId);
@@ -348,3 +390,4 @@ public class ProductService {
         return "mall:product:sku:" + skuId;
     }
 }
+

@@ -14,6 +14,9 @@ import java.sql.PreparedStatement;
 import java.util.List;
 
 @Repository
+/**
+ * 负责用户资料和收货地址的数据持久化。
+ */
 public class UserRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -273,3 +276,4 @@ public class UserRepository {
         ) == 1;
     }
 }
+

@@ -2,6 +2,9 @@ package com.mall.api.product;
 
 import java.math.BigDecimal;
 
+/**
+ * 商品详情页使用的详细 SKU 视图。
+ */
 public record ProductSkuDetailDTO(
     Long skuId,
     Long spuId,
@@ -18,3 +21,4 @@ public record ProductSkuDetailDTO(
     String description
 ) {
 }
+

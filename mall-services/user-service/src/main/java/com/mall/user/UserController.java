@@ -26,6 +26,9 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping
+/**
+ * 暴露当前用户资料和收货地址管理接口。
+ */
 public class UserController {
 
     private final UserService userService;
@@ -94,3 +97,4 @@ public class UserController {
         return CommonResponse.success(userService.getDefaultAddress(userId));
     }
 }
+

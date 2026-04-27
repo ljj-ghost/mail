@@ -7,6 +7,9 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+/**
+ * 为本地开发环境创建商品表结构和初始化目录数据。
+ */
 public class ProductSchemaInitializer implements ApplicationRunner {
 
     private final ProductCacheEvictor productCacheEvictor;
@@ -36,3 +39,4 @@ public class ProductSchemaInitializer implements ApplicationRunner {
         productCacheEvictor.evictAll();
     }
 }
+

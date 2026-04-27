@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 @Order(2)
 @Component
+/**
+ * 初始化本地开发环境使用的演示认证账号。
+ */
 public class AuthDemoAccountInitializer implements ApplicationRunner {
 
     private final AuthRepository authRepository;
@@ -36,3 +39,4 @@ public class AuthDemoAccountInitializer implements ApplicationRunner {
         authRepository.upsertAccount(userId, 1, loginName, passwordEncoder.encode(demoPassword), 1, roleCode, remark);
     }
 }
+

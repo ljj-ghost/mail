@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>mall-dependencies</artifactId>
+    <!-- 该模块只做依赖和插件版本管理，不承载业务代码。 -->
     <packaging>pom</packaging>
     <name>mall-dependencies</name>
 
@@ -28,6 +29,7 @@
     </properties>
 
     <dependencyManagement>
+        <!-- 在这里集中锁定全项目依赖版本，子模块按需声明即可。 -->
         <dependencies>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -100,6 +102,7 @@
 
     <build>
         <pluginManagement>
+            <!-- 在这里集中锁定构建插件版本和默认配置。 -->
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>

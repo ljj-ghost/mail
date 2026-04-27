@@ -10,6 +10,9 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+/**
+ * 订单管理页面中面向管理员的汇总行数据。
+ */
 record AdminOrderSummaryDTO(
     String orderNo,
     Long userId,
@@ -22,6 +25,9 @@ record AdminOrderSummaryDTO(
 ) {
 }
 
+/**
+ * 管理员代用户创建订单时使用的请求参数。
+ */
 record AdminOrderCreateRequest(
     @NotNull Long userId,
     String buyerRemark,
@@ -29,6 +35,9 @@ record AdminOrderCreateRequest(
 ) {
 }
 
+/**
+ * 管理员调整可变订单字段时使用的请求参数。
+ */
 record AdminOrderUpdateRequest(
     String buyerRemark,
     Integer orderStatus,
@@ -38,3 +47,4 @@ record AdminOrderUpdateRequest(
     String deliveryNo
 ) {
 }
+

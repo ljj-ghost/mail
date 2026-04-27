@@ -1,5 +1,8 @@
 package com.mall.common.core;
 
+/**
+ * 服务响应和异常映射使用的内置结果码定义。
+ */
 public enum CommonResultCode implements ResultCode {
     SUCCESS(0, "success"),
     BAD_REQUEST(400001, "Bad request"),
@@ -27,3 +30,4 @@ public enum CommonResultCode implements ResultCode {
         return message;
     }
 }
+

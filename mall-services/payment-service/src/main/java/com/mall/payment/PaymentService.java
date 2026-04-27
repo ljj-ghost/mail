@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+/**
+ * 处理支付创建、状态流转以及与订单回调协同的逻辑。
+ */
 public class PaymentService {
 
     private static final int PAY_PENDING = 0;
@@ -54,6 +57,9 @@ public class PaymentService {
         this.objectMapper = objectMapper;
     }
 
+    /**
+     * 为已有订单创建支付单，并返回收银所需信息。
+     */
     public PaymentCreateResponse create(PaymentCreateRequest request) {
         Long currentUserId = requireCurrentUserId();
         OrderBaseDTO order = orderClient.getOrder(request.orderNo()).data();
@@ -115,6 +121,9 @@ public class PaymentService {
         }
     }
 
+    /**
+     * 返回单个支付单的完整详情。
+     */
     public PaymentDetailDTO detail(String paymentNo) {
         Long currentUserId = requireCurrentUserId();
         PaymentDetailDTO cached = getCachedDetail(paymentNo);
@@ -128,6 +137,9 @@ public class PaymentService {
         return detail;
     }
 
+    /**
+     * 按可选状态条件列出当前用户支付单。
+     */
     public List<PaymentSummaryDTO> list(Integer status, Integer limit) {
         return paymentRepository.findByUserId(
             requireCurrentUserId(),
@@ -136,6 +148,9 @@ public class PaymentService {
         );
     }
 
+    /**
+     * 模拟第三方支付成功回调，并同步订单状态。
+     */
     public PaymentDetailDTO mockSuccess(String paymentNo, PaymentMockSuccessRequest request) {
         PaymentRepository.PaymentRecord payment = requireOwnedPayment(paymentNo);
         if (payment.payStatus() == PAY_SUCCESS) {
@@ -168,6 +183,9 @@ public class PaymentService {
         return detail;
     }
 
+    /**
+     * 当订单生命周期需要时，关闭该订单关联的支付单。
+     */
     public boolean closeByOrder(String orderNo, String reason) {
         PaymentRepository.PaymentRecord payment = paymentRepository.findByOrderNo(orderNo);
         if (payment == null || payment.payStatus() == PAY_CLOSED) {
@@ -314,3 +332,4 @@ public class PaymentService {
         return OffsetDateTime.now(ZoneOffset.ofHours(8));
     }
 }
+

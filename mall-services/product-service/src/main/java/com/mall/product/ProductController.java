@@ -28,6 +28,9 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping
+/**
+ * 暴露前台商城和管理员商品接口。
+ */
 public class ProductController {
 
     private final ProductService productService;
@@ -133,3 +136,4 @@ public class ProductController {
         return CommonResponse.success(productService.batchSkus(skuIds));
     }
 }
+

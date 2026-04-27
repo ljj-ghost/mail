@@ -12,6 +12,9 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 
 @Component
+/**
+ * 调用认证服务校验网关请求携带的访问令牌。
+ */
 public class GatewayAuthClient {
 
     private static final ParameterizedTypeReference<CommonResponse<TokenParseResponse>> TOKEN_PARSE_RESPONSE =
@@ -26,6 +29,9 @@ public class GatewayAuthClient {
             .build();
     }
 
+    /**
+     * 通过认证服务校验访问令牌，并返回解析后的身份信息。
+     */
     public Mono<TokenParseResponse> parseAccessToken(String token) {
         return webClient.post()
             .uri("/internal/v1/auth/tokens/parse")
@@ -56,3 +62,4 @@ public class GatewayAuthClient {
             );
     }
 }
+

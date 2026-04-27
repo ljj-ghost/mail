@@ -8,6 +8,9 @@ import jakarta.validation.constraints.Size;
 
 import java.time.OffsetDateTime;
 
+/**
+ * 密码登录请求参数。
+ */
 record LoginByPasswordRequest(
     @NotBlank String loginName,
     @NotBlank String password,
@@ -16,6 +19,9 @@ record LoginByPasswordRequest(
 ) {
 }
 
+/**
+ * 用于创建密码登录会员账号的注册请求参数。
+ */
 record RegisterByPasswordRequest(
     @NotBlank @Size(min = 3, max = 64) String loginName,
     @NotBlank @Size(min = 2, max = 32) String nickname,
@@ -27,15 +33,24 @@ record RegisterByPasswordRequest(
 ) {
 }
 
+/**
+ * 通过有效的刷新令牌换取新的访问令牌。
+ */
 record TokenRefreshRequest(@NotBlank String refreshToken) {
 }
 
+/**
+ * 当前用户修改登录密码时使用的请求参数。
+ */
 record CurrentUserPasswordResetRequest(
     @NotBlank @Size(min = 6, max = 32) String currentPassword,
     @NotBlank @Size(min = 6, max = 32) String newPassword
 ) {
 }
 
+/**
+ * 返回签发后的访问令牌、刷新令牌以及会话基础信息。
+ */
 record TokenInfoDTO(
     String accessToken,
     String refreshToken,
@@ -48,6 +63,9 @@ record TokenInfoDTO(
 ) {
 }
 
+/**
+ * 描述一个活动中或历史登录会话。
+ */
 record UserSessionDTO(
     String sessionNo,
     Integer deviceType,
@@ -61,9 +79,15 @@ record UserSessionDTO(
 ) {
 }
 
+/**
+ * 供网关和下游服务使用的内部令牌解析请求。
+ */
 record TokenParseRequest(@NotBlank String token) {
 }
 
+/**
+ * 认证服务返回的令牌身份解析结果。
+ */
 record TokenParseResponse(
     Long userId,
     String sessionNo,
@@ -74,9 +98,15 @@ record TokenParseResponse(
 ) {
 }
 
+/**
+ * 返回指定用户账号是否允许认证登录。
+ */
 record UserAuthStatusDTO(@NotNull Long userId, Boolean enabled) {
 }
 
+/**
+ * 管理员用户看板使用的汇总统计信息。
+ */
 record AdminUserSummaryDTO(
     Integer totalUsers,
     Integer adminUsers,
@@ -86,6 +116,9 @@ record AdminUserSummaryDTO(
 ) {
 }
 
+/**
+ * 管理员用户管理列表中的单行数据。
+ */
 record AdminUserListItemDTO(
     Long userId,
     String loginName,
@@ -98,6 +131,9 @@ record AdminUserListItemDTO(
 ) {
 }
 
+/**
+ * 管理员视角下的完整用户详情。
+ */
 record AdminUserDetailDTO(
     Long userId,
     String loginName,
@@ -110,6 +146,9 @@ record AdminUserDetailDTO(
 ) {
 }
 
+/**
+ * 管理员创建托管用户账号时使用的请求参数。
+ */
 record AdminUserCreateRequest(
     @NotBlank @Size(min = 3, max = 64) String loginName,
     @NotBlank @Size(min = 2, max = 32) String nickname,
@@ -121,6 +160,9 @@ record AdminUserCreateRequest(
 ) {
 }
 
+/**
+ * 管理员更新用户基础信息和状态时使用的请求参数。
+ */
 record AdminUserUpdateRequest(
     @NotBlank @Size(min = 3, max = 64) String loginName,
     @NotBlank @Size(min = 2, max = 32) String nickname,
@@ -131,5 +173,9 @@ record AdminUserUpdateRequest(
 ) {
 }
 
+/**
+ * 管理员重置用户密码时使用的请求参数。
+ */
 record AdminUserPasswordResetRequest(@NotBlank @Size(min = 6, max = 32) String password) {
 }
+

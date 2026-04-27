@@ -1,5 +1,8 @@
 package com.mall.common.core;
 
+/**
+ * 表示应作为预期接口错误返回的业务异常。
+ */
 public class BusinessException extends RuntimeException {
 
     private final int code;
@@ -18,3 +21,4 @@ public class BusinessException extends RuntimeException {
         return code;
     }
 }
+

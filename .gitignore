@@ -21,7 +21,7 @@ deploy/logs/
 deploy/run/
 deploy/data/
 deploy/*.transcript.txt
-sjk/
+docs/sql-dumps/
 *.log
 hs_err_pid*.log
 replay_pid*.log

@@ -23,6 +23,9 @@ import java.util.Set;
 import java.util.UUID;
 
 @Service
+/**
+ * 为管理员商品流程保存并提供商品图片资源。
+ */
 public class ProductAssetService {
 
     private static final Set<String> ALLOWED_CONTENT_TYPES = Set.of(
@@ -122,3 +125,4 @@ public class ProductAssetService {
         };
     }
 }
+

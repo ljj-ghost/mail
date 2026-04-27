@@ -1,5 +1,8 @@
 package com.mall.common.security;
 
+/**
+ * 定义后端服务识别的用户角色枚举。
+ */
 public enum UserRole {
     USER,
     ADMIN;
@@ -20,3 +23,4 @@ public enum UserRole {
         return ADMIN.name().equals(normalize(roleCode));
     }
 }
+

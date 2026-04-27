@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.Objects;
 
 @Repository
+/**
+ * 负责商品目录、分类以及管理员商品查询视图的数据持久化。
+ */
 public class ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
@@ -503,3 +506,4 @@ public class ProductRepository {
         );
     }
 }
+

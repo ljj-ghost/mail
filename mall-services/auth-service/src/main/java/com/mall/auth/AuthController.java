@@ -20,6 +20,9 @@ import java.util.List;
 @Validated
 @RestController
 @RequestMapping
+/**
+ * 暴露认证、会话以及管理员用户管理相关接口。
+ */
 public class AuthController {
 
     private final AuthService authService;
@@ -138,3 +141,4 @@ public class AuthController {
         return userAgent == null ? "" : userAgent;
     }
 }
+

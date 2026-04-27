@@ -24,6 +24,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Component
+/**
+ * 在网关层执行鉴权校验，并将解析出的用户信息透传给下游服务。
+ */
 public class GatewayAuthenticationFilter implements WebFilter, Ordered {
 
     private static final String USER_ID_HEADER = "X-User-Id";
@@ -57,6 +60,9 @@ public class GatewayAuthenticationFilter implements WebFilter, Ordered {
     }
 
     @Override
+    /**
+     * 放行公开请求，并对受保护接口强制执行 Bearer Token 校验。
+     */
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         String path = exchange.getRequest().getURI().getPath();
 
@@ -141,7 +147,11 @@ public class GatewayAuthenticationFilter implements WebFilter, Ordered {
     }
 
     @Override
+    /**
+     * 在大多数网关过滤器之前执行，确保下游路由始终能拿到鉴权后的请求头。
+     */
     public int getOrder() {
         return -100;
     }
 }
+

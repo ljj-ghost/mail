@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import java.util.List;
 
 @FeignClient(name = "product-service", url = "${services.product.url}")
+/**
+ * 在创建订单时从商品服务获取 SKU 快照。
+ */
 public interface ProductClient {
 
     @GetMapping("/internal/v1/products/skus/{skuId}")
@@ -19,3 +22,4 @@ public interface ProductClient {
     @PostMapping("/internal/v1/products/skus/batch")
     CommonResponse<List<SkuBaseDTO>> batchSku(@RequestBody List<Long> skuIds);
 }
+

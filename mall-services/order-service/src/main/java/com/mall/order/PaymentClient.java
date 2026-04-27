@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "payment-service", url = "${services.payment.url}")
+/**
+ * 在订单支付状态变更时调用支付服务。
+ */
 public interface PaymentClient {
 
     @PostMapping("/internal/v1/payments/orders/{orderNo}/close")
@@ -15,3 +18,4 @@ public interface PaymentClient {
         @RequestParam("reason") String reason
     );
 }
+

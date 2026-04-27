@@ -11,6 +11,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 @Component
+/**
+ * 集中管理商品相关缓存键和删除行为。
+ */
 class ProductCacheEvictor {
 
     private static final String PRODUCT_CACHE_PATTERN = "mall:product:*";
@@ -45,3 +48,4 @@ class ProductCacheEvictor {
         keys.clear();
     }
 }
+

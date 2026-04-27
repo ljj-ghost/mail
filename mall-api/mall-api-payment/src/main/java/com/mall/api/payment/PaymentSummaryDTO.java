@@ -3,6 +3,9 @@ package com.mall.api.payment;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
+/**
+ * 用于支付列表或摘要展示的轻量级支付投影。
+ */
 public record PaymentSummaryDTO(
     String paymentNo,
     String orderNo,
@@ -14,3 +17,4 @@ public record PaymentSummaryDTO(
     OffsetDateTime closeTime
 ) {
 }
+

@@ -17,6 +17,9 @@ import java.util.Date;
 import java.util.UUID;
 
 @Service
+/**
+ * 为认证服务签发并解析 JWT 访问令牌和刷新令牌。
+ */
 public class JwtTokenService {
 
     private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(8);
@@ -35,6 +38,9 @@ public class JwtTokenService {
         this.refreshTokenTtlSeconds = refreshTokenTtlSeconds;
     }
 
+    /**
+     * 为一次认证会话生成配套的访问令牌和刷新令牌。
+     */
     public IssuedTokens issueTokens(Long userId, String sessionNo, String loginName, String nickname, String userRole) {
         OffsetDateTime now = OffsetDateTime.now(DEFAULT_OFFSET);
         OffsetDateTime accessExpireTime = now.plusSeconds(accessTokenTtlSeconds);
@@ -46,6 +52,9 @@ public class JwtTokenService {
         return new IssuedTokens(accessToken, refreshToken, accessJti, refreshJti, accessExpireTime, refreshExpireTime);
     }
 
+    /**
+     * 解析并校验签名后的 JWT 令牌。
+     */
     public ParsedToken parseToken(String token) {
         try {
             Claims claims = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
@@ -111,3 +120,4 @@ public class JwtTokenService {
     ) {
     }
 }
+

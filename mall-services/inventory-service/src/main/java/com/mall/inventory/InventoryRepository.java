@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+/**
+ * 负责库存数量、预占记录以及相关管理员视图的数据持久化。
+ */
 public class InventoryRepository {
 
     private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(8);
@@ -283,3 +286,4 @@ public class InventoryRepository {
     ) {
     }
 }
+

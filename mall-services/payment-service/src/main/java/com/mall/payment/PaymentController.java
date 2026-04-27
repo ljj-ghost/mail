@@ -19,6 +19,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping
+/**
+ * 暴露支付创建、查询以及模拟回调接口。
+ */
 public class PaymentController {
 
     private final PaymentService paymentService;
@@ -62,3 +65,4 @@ public class PaymentController {
         return CommonResponse.success(paymentService.closeByOrder(orderNo, reason));
     }
 }
+
