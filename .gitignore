@@ -14,6 +14,7 @@ pnpm-debug.log*
 
 # Local tooling caches
 .tools/
+.codex-docx-render/
 
 # Runtime logs and crash dumps
 logs/
