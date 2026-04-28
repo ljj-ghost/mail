@@ -1,0 +1,11 @@
+package com.mall.api.payment.request;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
+/**
+ * 为已有订单请求创建支付单。
+ */
+public record PaymentCreateRequest(@NotBlank String orderNo, @NotNull Integer payChannel) {
+}
+
